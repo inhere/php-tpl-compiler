@@ -1,0 +1,31 @@
+{
+  "name": "inhere/tpl-compiler",
+  "type": "library",
+  "description": "a php tpl-compiler library",
+  "keywords": ["library", "tpl-compiler", ],
+  "homepage": "https://github.com/inhere/php-tpl-compiler",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "inhere",
+      "email": "in.798@qq.com",
+      "homepage": "http://www.yzone.net/"
+    }
+  ],
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Inhere\\Stc\\" : "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Inhere\\Stc\\Tests\\" : "tests/"
+    }
+  },
+  "suggest": {
+    "inhere/simple-print-tool": "Very lightweight data printing tools"
+  }
+}
