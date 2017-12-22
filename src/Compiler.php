@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: inhere
+ * Date: 2017-12-21
+ * Time: 13:31
+ */
 
 namespace Inhere\Stc;
 
@@ -7,17 +13,23 @@ namespace Inhere\Stc;
  */
 class Compiler extends Object
 {
+    /** @var string */
     private $_content;
 
+    /** @var string */
     private $_compiled;
 
+    /** @var string */
     private $_compiledDir;
 
+    /** @var string */
     private $_compiledFile;
 
+    /** @var array  */
     private $_valueMap = [];
 
-    private $_patten = [
+    /** @var array  */
+    private $_patterns = [
         '#\{\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}#',
         '#\{if (.*?)\}#',
         '#\{(else if|elseif) (.*?)\}#',
@@ -28,7 +40,8 @@ class Compiler extends Object
         '#\{\\^(k|v)\}#',
     ];
 
-    private $_translation = [
+    /** @var array The pattens replaces */
+    private $_replaces = [
         // old: echo \$this->_valueMap['\\1'];
         "<?=\$\\1;?>",
         '<?php if (\\1) {?>',
@@ -42,7 +55,7 @@ class Compiler extends Object
 
     /**
      * compile 编译模板文件
-     * @param string $source  模板文件
+     * @param string $srcFile  模板文件
      * @param array $values  键值对
      * @param string $dstFile 编译后文件
      * @return string|int
@@ -67,7 +80,7 @@ class Compiler extends Object
         $this->_compiled = $this->_content = trim($source);
 
         if (strpos($this->_content, '{$') !== false) {
-            $this->_compiled = preg_replace($this->_patten, $this->_translation, $this->_content);
+            $this->_compiled = preg_replace($this->_patterns, $this->_replaces, $this->_content);
         }
 
         if ($this->_compiledFile = $dstFile) {
@@ -81,9 +94,10 @@ class Compiler extends Object
 
     /**
      * render 编译后的文件
-     * @param string $file  编译后的文件
-     * @param array $values  键值对
+     * @param string $file 编译后的文件
+     * @param array $data 键值对
      * @return string
+     * @throws \Throwable
      */
     public function render(array $data = [], $file = null)
     {
@@ -113,5 +127,24 @@ class Compiler extends Object
     {
         extract($data, EXTR_OVERWRITE);
         include $file;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCompiledDir()
+    {
+        return $this->_compiledDir;
+    }
+
+    /**
+     * @param string $compiledDir
+     * @return Compiler
+     */
+    public function setCompiledDir($compiledDir)
+    {
+        $this->_compiledDir = $compiledDir;
+
+        return $this;
     }
 }

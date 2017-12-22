@@ -12,7 +12,9 @@
 
 namespace {$namespace};
 
+{if $parentClass}
 use {$parentClass};
+{/if}
 
 /**
  * Class {$className}

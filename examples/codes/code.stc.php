@@ -12,7 +12,9 @@
 
 namespace <?=$namespace;?>;
 
+<?php if ($parentClass) {?>
 use <?=$parentClass;?>;
+<?php }?>
 
 /**
  * Class <?=$className;?>
