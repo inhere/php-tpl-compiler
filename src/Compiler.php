@@ -30,7 +30,12 @@ class Compiler extends Object
 
     /** @var array  */
     private $_patterns = [
+        // {$var}
         '#\{\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)\}#',
+        // {$notExists ?? 'default'}
+        '#\{\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*) (.*?)\}#',
+        // {ucfirst($name)}
+        '#\{(\w+\(.*?)\}#',
         '#\{if (.*?)\}#',
         '#\{(else if|elseif) (.*?)\}#',
         '#\{else\}#',
@@ -44,6 +49,8 @@ class Compiler extends Object
     private $_replaces = [
         // old: echo \$this->_valueMap['\\1'];
         "<?=\$\\1;?>",
+        "<?=\$\\1 \\2;?>",
+        "<?=\\1;?>",
         '<?php if (\\1) {?>',
         '<?php } else if (\\2) {?>',
         '<?php }else {?>',
@@ -99,7 +106,7 @@ class Compiler extends Object
      * @return string
      * @throws \Throwable
      */
-    public function render(array $data = [], $file = null)
+    public function render(array $data = [], $file = null, $isCompiled = false)
     {
         $file = $file ?: $this->_compiledFile;
 
